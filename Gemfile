@@ -47,4 +47,5 @@ group :development, :test do
 
   gem "bcrypt"
   gem "jwt"
+  gem "rspec-rails"
 end

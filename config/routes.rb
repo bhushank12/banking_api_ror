@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   post 'login', to: 'auth#login'
+  get '/balance', to: 'accounts#balance'
 end

@@ -4,24 +4,24 @@ RSpec.describe "Accounts", type: :request do
   let(:user) { create(:user) }
   let!(:account) { create(:account, user: user) }
 
-  describe "GET /accounts/balance" do
+  describe "GET /balance" do
     it "returns the account balance for an authenticated user" do
       token = JsonWebToken.encode(user_id: user.id)
-      get "/accounts/balance", headers: { 'Authorization' => "Bearer #{token}" }
+      get "/balance", headers: { 'Authorization' => "Bearer #{token}" }
 
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)).to eq({ 'balance' => account.balance.to_f })
     end
 
     it "returns unauthorized for missing token" do
-      get "/accounts/balance"
+      get "/balance"
 
       expect(response).to have_http_status(:unauthorized)
       expect(JSON.parse(response.body)).to eq({ 'error' => 'Missing token' })
     end
 
     it "returns unauthorized for invalid token" do
-      get "/accounts/balance", headers: { 'Authorization' => "Bearer invalidtoken" }
+      get "/balance", headers: { 'Authorization' => "Bearer invalidtoken" }
 
       expect(response).to have_http_status(:unauthorized)
       expect(JSON.parse(response.body)).to eq({ 'error' => 'Invalid token' })
@@ -29,7 +29,7 @@ RSpec.describe "Accounts", type: :request do
 
     it "returns unauthorized for expired token" do
       token = JsonWebToken.encode({ user_id: user.id }, 1.second.ago)
-      get "/accounts/balance", headers: { 'Authorization' => "Bearer #{token}" }
+      get "/balance", headers: { 'Authorization' => "Bearer #{token}" }
 
       expect(response).to have_http_status(:unauthorized)
       expect(JSON.parse(response.body)).to eq({ 'error' => 'Token has expired' })
@@ -38,7 +38,7 @@ RSpec.describe "Accounts", type: :request do
     it "returns unauthorized for non-existent user" do
       token = JsonWebToken.encode(user_id: user.id)
       user.destroy
-      get "/accounts/balance", headers: { 'Authorization' => "Bearer #{token}" }
+      get "/balance", headers: { 'Authorization' => "Bearer #{token}" }
 
       expect(response).to have_http_status(:unauthorized)
       expect(JSON.parse(response.body)).to eq({ 'error' => 'User not found' })

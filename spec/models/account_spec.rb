@@ -45,5 +45,17 @@ RSpec.describe Account, type: :model do
     context 'belongs to user' do
       it { should belong_to(:user) }
     end
+
+    context 'has many transactions' do
+      it { should have_many(:transactions) }
+    end
+
+    context 'dependent destroy' do
+      it 'destroys associated transactions when account is destroyed' do
+        account.save
+        create(:transaction, account: account)
+        expect { account.destroy }.to change { Transaction.count }.by(-1)
+      end
+    end
   end
 end

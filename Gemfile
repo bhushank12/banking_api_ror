@@ -48,4 +48,5 @@ group :development, :test do
   gem "bcrypt"
   gem "jwt"
   gem "rspec-rails"
+  gem "factory_bot_rails"
 end

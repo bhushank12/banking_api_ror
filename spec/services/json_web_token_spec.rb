@@ -19,13 +19,13 @@ RSpec.describe JsonWebToken do
       expect(decoded_payload[:user_id]).to eq(1)
     end
 
-    it 'returns nil for invalid token' do
-      expect(described_class.decode('invalid token')).to be_nil
+    it 'raises JWT::DecodeError for invalid token' do
+      expect { described_class.decode('invalid_token') }.to raise_error(JWT::DecodeError)
     end
 
     it 'returns nil for expired token' do
-      token = described_class.encode(payload, 1.second.ago)
-      expect(described_class.decode(token)).to be_nil
+      expired_token = described_class.encode(payload, 1.second.ago)
+      expect { described_class.decode(expired_token) }.to raise_error(JWT::ExpiredSignature)
     end
 
     it 'returns hash with indifferent access' do

@@ -5,10 +5,9 @@
 ## Overview
 A simple Banking API built with Ruby on Rails that supports:
 
-1. JWT Authentication
+1. Login
 2. Account balance check
-3. Deposit transactions
-4. Secure and concurrent-safe updates
+3. Deposit money to account
 
 ## Tech Stack
 1. Ruby on Rails
@@ -22,21 +21,21 @@ A simple Banking API built with Ruby on Rails that supports:
 
  - POST /login
 
-Request
+Request -
 ```
 {
   "email": "alice@example.com",
   "pin": "1234"
 }
 ```
-Success Response
+Success -
 ```
 {
   "message": "Login successful",
   "token": "jwt_token_here"
 }
 ```
-Error Response
+Error -
 ```
 {
     "error": "Invalid email or pin"
@@ -52,10 +51,17 @@ Headers
 Authorization: Bearer <token>
 ```
 
-Success Response
+Success -
 ```
 {
   "balance": 1000.0
+}
+```
+
+Error -
+```
+{
+    "error": "Invalid token"
 }
 ```
 
@@ -66,21 +72,21 @@ Headers
 ```
 Authorization: Bearer <token>
 ```
-Request
+Request -
 ```
 {
   "amount": 50
 }
 ```
 
-Success Response
+Success -
 ```
 {
   "balance": 1050.0,
   "message": "Deposit successfully"
 }
 ```
-Error Response
+Error -
 ```
 {
   "error": "Amount must be greater than 0 or invalid amount"

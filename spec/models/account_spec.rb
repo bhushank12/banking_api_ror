@@ -58,4 +58,37 @@ RSpec.describe Account, type: :model do
       end
     end
   end
+
+  describe '#deposit!' do
+    context 'when amount is valid' do
+      it 'increases the balance' do
+        account.deposit!(50)
+
+        expect(account.reload.balance.to_f).to eq(1050.0)
+      end
+
+      it 'creates a transaction record' do
+        expect { account.deposit!(50) }.to change { account.transactions.count }.by(1)
+        txn = account.transactions.last
+        expect(txn.amount).to eq(50.0)
+        expect(txn.transaction_type).to eq("credit")
+      end
+    end
+
+    context 'when amount is zero or negative' do
+      it 'raises error for zero' do
+        expect { account.deposit!(0) }.to raise_error(ArgumentError, 'Amount must be greater than 0 or invalid amount')
+      end
+
+      it 'raises error for negative amount' do
+        expect { account.deposit!(-10) }.to raise_error(ArgumentError, 'Amount must be greater than 0 or invalid amount')
+      end
+    end
+
+    context 'when amount is invalid string' do
+      it 'raises error' do
+        expect { account.deposit!("abc") }.to raise_error(ArgumentError, 'Amount must be greater than 0 or invalid amount')
+      end
+    end
+  end
 end

@@ -9,6 +9,16 @@ class Account < ApplicationRecord
 
   before_create :generate_account_number
 
+  def deposit!(amount)
+    amount = amount.to_f
+    raise ArgumentError, "Amount must be greater than 0 or invalid amount" if amount <= 0
+
+    with_lock do
+      update!(balance: balance + amount)
+      transactions.create!(amount: amount, transaction_type: :credit)
+    end
+  end
+
   private
 
   def generate_account_number

@@ -33,7 +33,6 @@ A simple Banking API built with Ruby on Rails that supports:
 
 1. Each user has only one account can switch to has many in future easily.
 2. Balance cannot go negative.
-3. Deposit amount must be greater than 0.
 4. JWT token expires after 24 hours.
 5. No withdrawal feature implemented.
 

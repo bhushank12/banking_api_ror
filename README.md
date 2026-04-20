@@ -1,24 +1,91 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Banking API (Rails)
 
-Things you may want to cover:
+## Overview
+A simple Banking API built with Ruby on Rails that supports:
 
-* Ruby version
+1. JWT Authentication
+2. Account balance check
+3. Deposit transactions
+4. Secure and concurrent-safe updates
 
-* System dependencies
+## Tech Stack
+1. Ruby on Rails
+2. PostgreSQL
+3. RSpec (Testing)
+4. JWT (Authentication and authorization)
 
-* Configuration
+## API Endpoints
 
-* Database creation
+### Login
 
-* Database initialization
+ - POST /login
 
-* How to run the test suite
+Request
+```
+{
+  "email": "alice@example.com",
+  "pin": "1234"
+}
+```
+Success Response
+```
+{
+  "message": "Login successful",
+  "token": "jwt_token_here"
+}
+```
+Error Response
+```
+{
+    "error": "Invalid email or pin"
+}
+```
+### Get Account Balance
 
-* Services (job queues, cache servers, search engines, etc.)
+- GET /balance
 
-* Deployment instructions
 
-* ...
+Headers
+```
+Authorization: Bearer <token>
+```
+
+Success Response
+```
+{
+  "balance": 1000.0
+}
+```
+
+### Deposit Money
+- POST /deposit
+
+Headers
+```
+Authorization: Bearer <token>
+```
+Request
+```
+{
+  "amount": 50
+}
+```
+
+Success Response
+```
+{
+  "balance": 1050.0,
+  "message": "Deposit successfully"
+}
+```
+Error Response
+```
+{
+  "error": "Amount must be greater than 0 or invalid amount"
+}
+```
+## Authentication Flow
+1. User logs in using email + PIN and server returns JWT token.
+2. Pass token in all protected APIs in headers as Authorization: Bearer <token> to access /deposit, /balance apis.

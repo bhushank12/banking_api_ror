@@ -10,4 +10,5 @@ Rails.application.routes.draw do
 
   post 'login', to: 'auth#login'
   get '/balance', to: 'accounts#balance'
+  post '/deposit', to: 'transactions#deposit'
 end

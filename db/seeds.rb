@@ -10,23 +10,31 @@
 
 # Alice as a user
 ActiveRecord::Base.transaction do
-  alice = User.create!(name: "Alice", email: "alice@example.com", pin: "1234")
-  Account.create!(user: alice,
+  alice = User.find_or_create_by!(email: "alice@example.com") do |u|
+    u.name = "Alice"
+    u.pin = "1234"
+  end
+  account = Account.find_or_create_by!(user: alice,
     balance: 1000,
     ifsc_code: "HDFC0001234",
     branch_name: "Pune",
     address: "Pune Main Branch"
   )
+  account.transactions.find_or_create_by!(amount: 1000, transaction_type: :credit)
 end
 
 # Bob as a user
 ActiveRecord::Base.transaction do
-  bob = User.create!(name: "Bob", email: "bob@example.com", pin: "4321")
-  Account.create!(
+  bob = User.find_or_create_by!(email: "bob@example.com") do |u|
+    u.name = "Bob"
+    u.pin = "4321"
+  end
+  account = Account.find_or_create_by!(
     user: bob,
     balance: 500,
     ifsc_code: "HDFC0001234",
     branch_name: "Pune",
     address: "Pune Branch"
   )
+  account.transactions.find_or_create_by!(amount: 500, transaction_type: :credit)
 end
